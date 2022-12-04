@@ -1,6 +1,6 @@
 // import UserServices from '@App/Services/UserServices';
 import Component from "../../../Abstractions/Component.js";
-import UserDetails from "./UserDetails.js";
+import UserDetails from "./UserCard.js";
 
 
 class UserRow extends Component {
@@ -11,7 +11,7 @@ class UserRow extends Component {
     constructor(user, showUserDetails, container) {
         super("tr", container);
         this.user = user;
-        this.showUserDetails = showUserDetails
+        this.ShowUserCard = showUserDetails
     }
 
     BuildComponent() {
@@ -34,9 +34,9 @@ class UserRow extends Component {
         `;
 
         const updateBtn = this.element.querySelector(`#update_${this.user.id}`) 
-        updateBtn.addEventListener("click", () =>  this.showUserDetails(this.user.id, "update"))
+        updateBtn.addEventListener("click", () =>  this.ShowUserCard(this.user.id, "update"))
         const deleteBtn = this.element.querySelector(`#delete_${this.user.id}`) 
-        deleteBtn.addEventListener("click", () => this.userServices.Delete(this.user.id))
+        deleteBtn.addEventListener("click", () => this.ShowUserCard(this.user.id,"delete"))
         const fullNameRow = this.element.querySelector(`#fullName_${this.user.id}`);
         fullNameRow.addEventListener("click", () => {
             this.showUserDetails(this.user.id, "view");

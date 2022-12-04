@@ -3,7 +3,7 @@ import Component from "../../../Abstractions/Component.js";
 import { toast } from "../../../main.js";
 
 
-class UserDetails extends Component {
+class UserCard extends Component {
     user;
     mode;
     userServices;
@@ -62,12 +62,32 @@ class UserDetails extends Component {
                     const formData = new FormData(e.target);
                     const updatedUser = await this.userServices.Update({id: this.user.id,...Object.fromEntries(formData)})
                     console.log(updatedUser);
-                    toast.Add("User updated");
                     this.Update(null,"");
                     this.Dispose();
                 })
                 break;
             case "delete":
+                this.element.id = `userDetails_${this.user.id}`;
+                this.element.style.width = "36rem";
+                this.element.className ="card";
+                this.element.innerHTML = `
+                    <div class="card-body">
+                        <h5 class="card-title">Delete ${this.user.first_name} ${this.user.last_name}?</h5>
+                        <button id="delete">Delete</button>
+                        <button id="cancel">Cancel</button>
+                    </div>    
+                `;
+                const deleteBtn = this.element.querySelector("#delete");
+                const cancelBtn = this.element.querySelector("#cancel");
+                deleteBtn.addEventListener("click", async (e)=> {
+                    const result = await this.userServices.Delete(this.user.id)
+                    this.Update(null,"");
+                    this.Dispose();
+                })
+                cancelBtn.addEventListener("click", async (e)=> {
+                    this.Update(null,"");
+                    this.Dispose();
+                })
                 break;
             default:
                 this.element.innerHTML = "";
@@ -85,4 +105,4 @@ class UserDetails extends Component {
 
 }
 
-export default UserDetails;
+export default UserCard;
