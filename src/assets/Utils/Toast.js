@@ -8,8 +8,8 @@ class Toast extends Component {
 
     Add(message) {
         const id = "toast_" + Date.now().toString()
-        console.log(this.element.id);
-        this.element.innerHTML += `
+        const tc = this.container.querySelector("#toastContainer")
+        tc.innerHTML += `
                 <div class="toast show align-items-center border-0" role="alert" id="${id}">
                     <div class="d-flex">
                         <div class="toast-body">
@@ -19,24 +19,28 @@ class Toast extends Component {
                     </div>
                 </div>
                 `
-        const el = this.element.querySelector(`#${id}`);
-        el && el.addEventListener("click",()=> this.Remove(id));
+        
+        //appending to innerhtml removes event listeners
+        const toasts = this.container.querySelectorAll(`.toast`);
+        [...toasts].forEach(toast => toast.addEventListener("click", () => this.Remove(toast.id)))
+
         setTimeout(() => {
             this.Remove(id);
-        }, 5000);
+        }, 50000);
 
         return id;
     }
 
     Remove(id) {
-        const el = this.element.querySelector(`#${id}`);
+        const el = this.container.querySelector(`#${id}`);
         el && el.remove();
     }
 
     BuildComponent() {
         this.element = document.createElement("div");
         this.element.id= "toastContainer";
-        this.element.className = "position-fixed bottom-0 end-0 p-3";
+        this.element.className = "position-fixed bottom-0 end-0 p-3 d-flex flex-column gap-3";
+        // this.element.style.border = "1px solid red"
     }
 }
 
