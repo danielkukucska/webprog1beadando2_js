@@ -13,7 +13,7 @@ export class UsersPage {
     usersPerPage = 10;
     usersDetailsContainer;
     userDetails;
- 
+
     constructor(container, userServices) {
         container.innerHTML = `
         <header>
@@ -44,7 +44,7 @@ export class UsersPage {
 
         this.tbody = container.querySelector("#usersTableBody");
         this.userServices = userServices;
-        this.userDetails = new UserDetails(null,this.usersDetailsContainer);
+        this.userDetails = new UserDetails(null, this.userServices, this.usersDetailsContainer);
     }
 
     LoadUsers = async (page) => {
@@ -54,20 +54,25 @@ export class UsersPage {
 
         this.loadingModal.Render();
 
-        const {users, total, totalPage} = await this.userServices.GetAll(page, this.usersPerPage);
+        const { users, total, totalPage } = await this.userServices.GetAll(page, this.usersPerPage);
 
         this.loadingModal.Dispose();
 
-        if (!users){
+        if (!users) {
             this.loadingModal.Dispose();
             return;
         }
 
-        if (this.usersPagination){
+        if (this.usersPagination) {
             this.usersPagination.Dispose();
         }
 
-        this.usersPagination = new Pagination(Array.from({length: totalPage}, (_, i) => i + 1), page || 1, this.LoadUsers, this.usersPaginationContainer);
+        this.usersPagination = new Pagination(
+            Array.from({ length: totalPage }, (_, i) => i + 1),
+            page || 1,
+            this.LoadUsers,
+            this.usersPaginationContainer
+        );
         this.usersPagination.Render();
 
         this.tbody.innerHTML = "";
@@ -82,7 +87,7 @@ export class UsersPage {
 
     ShowUserDetails = async (id, mode) => {
         const user = await this.userServices.GetById(id);
-        this.userDetails.Update(user, mode)
+        this.userDetails.Update(user, mode);
         this.userDetails.ReRender();
 
         const editModal = document.getElementById("userModal");

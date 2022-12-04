@@ -1,14 +1,17 @@
 // import UserServices from '@App/Services/UserServices';
 import Component from "../../../Abstractions/Component.js";
+import { toast } from "../../../main.js";
 
 
 class UserDetails extends Component {
     user;
     mode;
+    userServices;
 
-    constructor(user, container) {
-        super("tr", container);
+    constructor(user,userServices, container) {
+        super("div", container);
         this.user = user;
+        this.userServices = userServices;
     }
 
     BuildComponent() {
@@ -31,7 +34,38 @@ class UserDetails extends Component {
                 `;
                 break;
             case "update":
-
+                this.element.id = `userDetails_${this.user.id}`;
+                this.element.style.width = "36rem";
+                this.element.className ="card";
+                this.element.innerHTML = `
+                    <form class="card-body">
+                        <label for="firstName">
+                            First Name
+                        </label>
+                        <input type="text" value="${this.user.first_name}" id="firstName" name="firstName" class="card-title" placeholder="First name" />
+                        <label for="lastName">
+                            Last Name
+                        </label>
+                        <input type="text" value="${this.user.last_name}" id="lastName" name="lastName" class="card-title" placeholder="Last name" />
+                        <label>
+                            Email
+                        </label>
+                        <input type="email" value="${this.user.email}" id="email" name="email" class="card-title" placeholder="Last name" />
+                        
+                        <input type="submit" value="Update" />
+                        <input type="reset" value="Reset"/>
+                    </form>    
+                `;
+                const form = this.element.querySelector("form");
+                form.addEventListener("submit", async (e)=> {
+                    e.preventDefault();
+                    const formData = new FormData(e.target);
+                    const updatedUser = await this.userServices.Update({id: this.user.id,...Object.fromEntries(formData)})
+                    console.log(updatedUser);
+                    toast.Add("User updated");
+                    this.Update(null,"");
+                    this.Dispose();
+                })
                 break;
             case "delete":
                 break;
