@@ -2,7 +2,7 @@ import UserServices from "../../Services/UserServices.js";
 import LoadingModal from "../../Utils/Loading.js";
 import Pagination from "../Pagination/Pagination.js";
 import UserRow from "./Components/UserRow.js";
-
+import UserDetails from "./Components/UserDetails.js";
 export class UsersPage {
     tbody;
     userServices;
@@ -11,7 +11,9 @@ export class UsersPage {
     usersPaginationContainer;
     usersPagination;
     usersPerPage = 10;
-
+    usersDetailsContainer;
+    userDetails;
+ 
     constructor(container, userServices) {
         container.innerHTML = `
         <header>
@@ -33,13 +35,16 @@ export class UsersPage {
                 </table>
             </div>
             <div id="usersPagination"></div>
+            <div id="usersDetails"></div>
         </main>
         `;
 
         this.usersPaginationContainer = container.querySelector("#usersPagination");
+        this.usersDetailsContainer = container.querySelector("#usersDetails");
 
         this.tbody = container.querySelector("#usersTableBody");
         this.userServices = userServices;
+        this.userDetails = new UserDetails(null,this.usersDetailsContainer);
     }
 
     LoadUsers = async (page) => {
@@ -68,14 +73,18 @@ export class UsersPage {
         this.tbody.innerHTML = "";
 
         users.forEach((user) => {
-            const userRow = new UserRow(user, this.userServices, this.tbody);
+            const userRow = new UserRow(user, this.ShowUserDetails, this.tbody);
             userRow.Render();
         });
 
         console.log(users);
     };
 
-    ToggleUserModal = () => {
+    ShowUserDetails = async (id, mode) => {
+        const user = await this.userServices.GetById(id);
+        this.userDetails.Update(user, mode)
+        this.userDetails.ReRender();
+
         const editModal = document.getElementById("userModal");
 
         if (editModal) {

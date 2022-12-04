@@ -11,7 +11,12 @@ class Component {
     
     Render() {
         this.BuildComponent();
-        this.element && this.container.appendChild(this.element);
+        this.container.appendChild(this.element);
+    }
+
+    ReRender(){
+        this.container.innerHTML = "";
+        this.Render();
     }
 
     Dispose(){

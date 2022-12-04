@@ -1,15 +1,17 @@
 // import UserServices from '@App/Services/UserServices';
 import Component from "../../../Abstractions/Component.js";
+import UserDetails from "./UserDetails.js";
 
 
 class UserRow extends Component {
     user;
-    userServices;
+    showUserDetails;
 
-    constructor(user, userServices, container) {
+    //TODO show update, delete popup
+    constructor(user, showUserDetails, container) {
         super("tr", container);
         this.user = user;
-        this.userServices = userServices
+        this.showUserDetails = showUserDetails
     }
 
     BuildComponent() {
@@ -19,7 +21,7 @@ class UserRow extends Component {
         <td>
             <img src="${this.user.avatar}" alt="Profile picture for ${this.user.first_name} ${this.user.last_name}"/>
         </td>
-        <td>
+        <td id="fullName_${this.user.id}">
             ${this.user.first_name} ${this.user.last_name}
         </td>
         <td>
@@ -32,9 +34,13 @@ class UserRow extends Component {
         `;
 
         const updateBtn = this.element.querySelector(`#update_${this.user.id}`) 
-        updateBtn.addEventListener("click", () => console.log("TODO: update and create modal"))
+        updateBtn.addEventListener("click", () =>  this.showUserDetails(this.user.id, "update"))
         const deleteBtn = this.element.querySelector(`#delete_${this.user.id}`) 
         deleteBtn.addEventListener("click", () => this.userServices.Delete(this.user.id))
+        const fullNameRow = this.element.querySelector(`#fullName_${this.user.id}`);
+        fullNameRow.addEventListener("click", () => {
+            this.showUserDetails(this.user.id, "view");
+        })
     }
 
 }
