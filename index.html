@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <!-- <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>WebProg I. Beadando II.</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+            crossorigin="anonymous"
+        />
+        <script type="module" src="./src/assets/main.js" defer></script>
+    </head>
+
+    <body>
+        <header>
+            <h1>Users API</h1>
+        </header>
+        <button id="toast">Test Toast</button>
+        <main class="container">
+            <div class="table-responsive" id="usersTable">
+                <table class="table table-striped table-dark">
+                    <thead>
+                        <tr>
+                            <th id="avatar">Avatar</th>
+                            <th id="fullName">Full Name</th>
+                            <th id="email">Email</th>
+                            <th id="actions">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-group-divider" id="usersTableBody"></tbody>
+                </table>
+            </div>
+        </main>
+    </body>
+</html>

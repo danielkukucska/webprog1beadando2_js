@@ -1,0 +1,22 @@
+{
+  "name": "sqabsb_beadando_2",
+  "version": "1.0.0",
+  "description": "Web development - second assessment",
+  "main": "index.html",
+  "scripts": {
+    "pretty": "prettier --write \"./**/*.{css,html,js}\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danielkukucska/webprog1beadando2_js.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danielkukucska/webprog1beadando2_js/issues"
+  },
+  "homepage": "https://github.com/danielkukucska/webprog1beadando2_js#readme",
+  "devDependencies": {
+    "prettier": "^2.7.1"
+  }
+}
