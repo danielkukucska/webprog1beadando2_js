@@ -5,13 +5,13 @@ import UserDetails from "./UserCard.js";
 
 class UserRow extends Component {
     user;
-    showUserDetails;
+    showUserCard;
 
     //TODO show update, delete popup
-    constructor(user, showUserDetails, container) {
+    constructor(user, showUserCard, container) {
         super("tr", container);
         this.user = user;
-        this.ShowUserCard = showUserDetails
+        this.showUserCard = showUserCard
     }
 
     BuildComponent() {
@@ -34,12 +34,12 @@ class UserRow extends Component {
         `;
 
         const updateBtn = this.element.querySelector(`#update_${this.user.id}`) 
-        updateBtn.addEventListener("click", () =>  this.ShowUserCard(this.user.id, "update"))
+        updateBtn.addEventListener("click", () =>  this.showUserCard(this.user.id, "update"))
         const deleteBtn = this.element.querySelector(`#delete_${this.user.id}`) 
-        deleteBtn.addEventListener("click", () => this.ShowUserCard(this.user.id,"delete"))
+        deleteBtn.addEventListener("click", () => this.showUserCard(this.user.id,"delete"))
         const fullNameRow = this.element.querySelector(`#fullName_${this.user.id}`);
         fullNameRow.addEventListener("click", () => {
-            this.showUserDetails(this.user.id, "view");
+            this.showUserCard(this.user.id, "view");
         })
     }
 

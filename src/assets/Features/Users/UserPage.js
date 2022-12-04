@@ -11,7 +11,7 @@ export class UsersPage {
     usersPagination;
     usersPerPage = 10;
     usersDetailsContainer;
-    UserCard;
+    userCard;
 
     constructor(container, userServices) {
         container.innerHTML = `
@@ -43,7 +43,7 @@ export class UsersPage {
 
         this.tbody = container.querySelector("#usersTableBody");
         this.userServices = userServices;
-        this.UserCard = new UserCard(null, this.userServices, this.usersDetailsContainer);
+        this.userCard = new UserCard(null, this.userServices, this.usersDetailsContainer);
     }
 
     LoadUsers = async (page) => {
@@ -86,18 +86,8 @@ export class UsersPage {
 
     ShowUserCard = async (id, mode) => {
         const user = await this.userServices.GetById(id);
-        this.UserCard.Update(user, mode);
-        this.UserCard.ReRender();
-
-        const editModal = document.getElementById("userModal");
-
-        if (editModal) {
-            console.log("Finish edit");
-            editModal.remove();
-        } else {
-            //TODO add modal
-            console.log("Edit user");
-        }
+        this.userCard.Update(user, mode);
+        this.userCard.ReRender();
     };
 
     SaveUser = async (mode) => {

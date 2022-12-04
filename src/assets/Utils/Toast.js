@@ -4,12 +4,11 @@ class Toast extends Component {
 
     constructor(container) {
         super("div",container);
-        this.element.className = "position-fixed bottom-0 end-0 p-3"
     }
 
     Add(message) {
         const id = "toast_" + Date.now().toString()
-
+        console.log(this.element.id);
         this.element.innerHTML += `
                 <div class="toast show align-items-center border-0" role="alert" id="${id}">
                     <div class="d-flex">
@@ -36,6 +35,8 @@ class Toast extends Component {
 
     BuildComponent() {
         this.element = document.createElement("div");
+        this.element.id= "toastContainer";
+        this.element.className = "position-fixed bottom-0 end-0 p-3";
     }
 }
 

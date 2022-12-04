@@ -11,7 +11,6 @@ class UserServices extends Service {
             const resp = await fetch(this.baseUrl + `?page=${page}`);
             if (!resp.ok) throw new HttpException(resp.status, resp.statusText);
             const { data, total, total_pages } = await resp.json();
-            
             toast.Add("Users loaded.");
             return {users: data, total, totalPage: total_pages};
         } catch (error) {
@@ -32,6 +31,7 @@ class UserServices extends Service {
             const resp = await fetch(this.baseUrl + "/" + id);
             if (!resp.ok) throw new HttpException(resp.status, resp.statusText);
             const { data } = await resp.json();
+            toast.Add(`User loaded with id: ${id}`)
             return data;
         } catch (error) {
             switch (true) {
@@ -60,6 +60,7 @@ class UserServices extends Service {
             });
             if (!resp.ok) throw new HttpException(resp.status, resp.statusText);
             const data = await resp.json();
+            toast.Add(`User created with id: ${data.id}`)
             return data;
         } catch (error) {
             switch (true) {
@@ -87,6 +88,7 @@ class UserServices extends Service {
                 body: JSON.stringify(item),
             });
             if (!resp.ok) throw new HttpException(resp.status, resp.statusText);
+            toast.Add(`User updated with id: ${item.id}`)
             const data = await resp.json();
             return data;
         } catch (error) {
@@ -111,6 +113,7 @@ class UserServices extends Service {
                 method: "DELETE",
             });
             if (!resp.ok) throw new HttpException(resp.status, resp.statusText);
+            toast.Add(`User deleted with id: ${id}`)
             return true;
         } catch (error) {
             switch (true) {
