@@ -32,9 +32,9 @@ class UserRow extends Component {
         `;
 
         const updateBtn = this.element.querySelector(`#update_${this.user.id}`) 
-        updateBtn && updateBtn.addEventListener("click", () => console.log("TODO: update and create modal"))
+        updateBtn.addEventListener("click", () => console.log("TODO: update and create modal"))
         const deleteBtn = this.element.querySelector(`#delete_${this.user.id}`) 
-        deleteBtn && deleteBtn.addEventListener("click", () => this.userServices.Delete(this.user.id))
+        deleteBtn.addEventListener("click", () => this.userServices.Delete(this.user.id))
     }
 
 }

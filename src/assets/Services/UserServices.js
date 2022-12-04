@@ -6,20 +6,21 @@ class UserServices extends Service {
     constructor(baseUrl) {
         super(baseUrl);
     }
-    async GetAll(page = 1){
+    async GetAll(page = 1, usersPerPage = 6){
         try {
             const resp = await fetch(this.baseUrl + `?page=${page}`);
             if (!resp.ok) throw new HttpException(resp.status, resp.statusText);
-            const { data } = await resp.json();
+            const { data, total, total_pages } = await resp.json();
+            
             toast.Add("Users loaded.");
-            return data;
+            return {users: data, total, totalPage: total_pages};
         } catch (error) {
             switch (true) {
                 case error.status >= 500:
                     toast.Add("Unexpected server error.");
                     break;
                 default:
-                    error.Add("Unexpected error.");
+                    toast.Add("Unexpected error.");
                     break;
             }
             return null;

@@ -6,7 +6,9 @@ export const toast = new Toast();
 
 toast.Render();
 
-const container = document.querySelector("#usersTableBody");
+document.body.innerHTML += `<div id="usersPage"></div>`
+
+const container = document.querySelector("#usersPage");
 if (container) {
     const usersPage = new UsersPage(container, new UserServices("https://reqres.in/api/users"));
     usersPage.LoadUsers();
