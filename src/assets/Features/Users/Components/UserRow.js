@@ -1,17 +1,26 @@
 // import UserServices from '@App/Services/UserServices';
 import Component from "../../../Abstractions/Component.js";
-import UserDetails from "./UserCard.js";
+import User from "../Models/User.js";
 
-
+/**
+ * @class
+ * @constructor
+ * @extends Component
+ */
 class UserRow extends Component {
     user;
     showUserCard;
 
     //TODO show update, delete popup
+    /**
+     * @param {User} user
+     * @param {boolean} showUserCard
+     * @param {HTMLElement} container
+     */
     constructor(user, showUserCard, container) {
         super("tr", container);
         this.user = user;
-        this.showUserCard = showUserCard
+        this.showUserCard = showUserCard;
     }
 
     BuildComponent() {
@@ -33,16 +42,15 @@ class UserRow extends Component {
         </td>
         `;
 
-        const updateBtn = this.element.querySelector(`#update_${this.user.id}`) 
-        updateBtn.addEventListener("click", () =>  this.showUserCard(this.user.id, "update"))
-        const deleteBtn = this.element.querySelector(`#delete_${this.user.id}`) 
-        deleteBtn.addEventListener("click", () => this.showUserCard(this.user.id,"delete"))
+        const updateBtn = this.element.querySelector(`#update_${this.user.id}`);
+        updateBtn.addEventListener("click", () => this.showUserCard(this.user.id, "update"));
+        const deleteBtn = this.element.querySelector(`#delete_${this.user.id}`);
+        deleteBtn.addEventListener("click", () => this.showUserCard(this.user.id, "delete"));
         const fullNameRow = this.element.querySelector(`#fullName_${this.user.id}`);
         fullNameRow.addEventListener("click", () => {
             this.showUserCard(this.user.id, "view");
-        })
+        });
     }
-
 }
 
 export default UserRow;

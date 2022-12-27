@@ -1,30 +1,40 @@
 // import UserServices from '@App/Services/UserServices';
 import Component from "../../../Abstractions/Component.js";
-import { toast } from "../../../main.js";
+import User from "../Models/User.js";
+import UserServices from "../../../Services/UserServices.js";
 
-
+/**
+ * @class
+ * @constructor
+ * @extends Component
+ */
 class UserCard extends Component {
     user;
     mode;
     userServices;
 
-    constructor(user,userServices, container) {
+    /**
+     * @param {User} user
+     * @param {UserServices} userServices
+     * @param {HTMLElement} container
+     */
+    constructor(user, userServices, container) {
         super("div", container);
         this.user = user;
         this.userServices = userServices;
     }
 
     BuildComponent() {
-        if(!this.user) {
+        if (!this.user) {
             this.element.innerHTML = "";
             return;
-        };
+        }
 
         switch (this.mode) {
             case "view":
                 this.element.id = `userDetails_${this.user.id}`;
                 this.element.style.width = "18rem";
-                this.element.className ="card";
+                this.element.className = "card";
                 this.element.innerHTML = `
                     <img src="${this.user.avatar}" class="card-img-top" alt="Profile picture for ${this.user.first_name} ${this.user.last_name}">
                     <div class="card-body">
@@ -36,7 +46,7 @@ class UserCard extends Component {
             case "update":
                 this.element.id = `userDetails_${this.user.id}`;
                 this.element.style.width = "36rem";
-                this.element.className ="card";
+                this.element.className = "card";
                 this.element.innerHTML = `
                     <form class="card-body">
                         <label for="firstName">
@@ -57,19 +67,19 @@ class UserCard extends Component {
                     </form>    
                 `;
                 const form = this.element.querySelector("form");
-                form.addEventListener("submit", async (e)=> {
+                form.addEventListener("submit", async (e) => {
                     e.preventDefault();
                     const formData = new FormData(e.target);
-                    const updatedUser = await this.userServices.Update({id: this.user.id,...Object.fromEntries(formData)})
+                    const updatedUser = await this.userServices.Update({ id: this.user.id, ...Object.fromEntries(formData) });
                     console.log(updatedUser);
-                    this.Update(null,"");
+                    this.Update(null, "");
                     this.Dispose();
-                })
+                });
                 break;
             case "delete":
                 this.element.id = `userDetails_${this.user.id}`;
                 this.element.style.width = "36rem";
-                this.element.className ="card";
+                this.element.className = "card";
                 this.element.innerHTML = `
                     <div class="card-body">
                         <h5 class="card-title">Delete ${this.user.first_name} ${this.user.last_name}?</h5>
@@ -79,30 +89,31 @@ class UserCard extends Component {
                 `;
                 const deleteBtn = this.element.querySelector("#delete");
                 const cancelBtn = this.element.querySelector("#cancel");
-                deleteBtn.addEventListener("click", async (e)=> {
-                    const result = await this.userServices.Delete(this.user.id)
-                    this.Update(null,"");
+                deleteBtn.addEventListener("click", async (e) => {
+                    const result = await this.userServices.Delete(this.user.id);
+                    this.Update(null, "");
                     this.Dispose();
-                })
-                cancelBtn.addEventListener("click", async (e)=> {
-                    this.Update(null,"");
+                });
+                cancelBtn.addEventListener("click", async (e) => {
+                    this.Update(null, "");
                     this.Dispose();
-                })
+                });
                 break;
             default:
                 this.element.innerHTML = "";
                 break;
         }
-
-       
     }
 
-    Update(user,mode){
+    /**
+     *
+     * @param {*} user
+     * @param {*} mode
+     */
+    Update(user, mode) {
         this.user = user;
         this.mode = mode;
     }
-    
-
 }
 
 export default UserCard;

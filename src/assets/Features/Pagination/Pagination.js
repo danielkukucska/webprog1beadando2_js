@@ -1,38 +1,51 @@
 import Component from "../../Abstractions/Component.js";
 
-class Pagination extends Component{
+/**
+ * @class
+ * @constructor
+ */
+class Pagination extends Component {
     pageNumbers;
     activePage;
-    loadPage;
+    changePage;
 
-    constructor(pageNumbers, activePage, loadPage , container) {
+    /**
+     * @param {number} pageNumbers
+     * @param {number} activePage
+     * @param {() => void} changePage
+     * @param {HTMLElement} container
+     */
+    constructor(pageNumbers, activePage, changePage, container) {
         super("nav", container);
         this.pageNumbers = pageNumbers;
         this.activePage = activePage;
-        this.loadPage = loadPage;
+        this.changePage = changePage;
     }
 
-    BuildComponent(){
+    BuildComponent() {
         this.element.innerHTML = `
         <ul class="pagination">
-        ${this.pageNumbers.map(number => 
-            `<li class="page-item">
+        ${this.pageNumbers
+            .map(
+                (number) =>
+                    `<li class="page-item">
                 <button 
                     id="page_${number}"
-                    class="page-link ${number == this.activePage ? 'active' : ''}"
+                    class="page-link ${number == this.activePage ? "active" : ""}"
                 >
                     ${number}
                 </button>
             </li>
-            `).join("")}
+            `
+            )
+            .join("")}
         </ul>
-        `
-        
-        this.element.querySelectorAll(".page-link").forEach(btn => {
-            btn.addEventListener("click", () => this.loadPage(btn.id.replace("page_","")))
-        })
-    }
+        `;
 
+        this.element.querySelectorAll(".page-link").forEach((btn) => {
+            btn.addEventListener("click", () => this.changePage(btn.id.replace("page_", "")));
+        });
+    }
 }
 
-export default Pagination
+export default Pagination;

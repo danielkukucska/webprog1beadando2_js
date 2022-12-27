@@ -2,24 +2,48 @@ import LoadingModal from "../../Utils/Loading.js";
 import Pagination from "../Pagination/Pagination.js";
 import UserRow from "./Components/UserRow.js";
 import UserCard from "./Components/UserCard.js";
+import UserServices from "../../Services/UserServices.js";
+import User from "./Models/User.js";
+
+/**
+ * @class
+ * @constructor
+ */
 export class UsersPage {
     tbody;
     userServices;
+    /**
+     * @type {User[]}
+     */
     users = [];
     loadingModal = new LoadingModal("Loading users...");
     usersPaginationContainer;
+    /**
+     * @type {Pagination | null}
+     */
     usersPagination;
     usersPerPage = 10;
+    selectedPage = 1;
+    totalPages = 2;
     usersDetailsContainer;
     userCard;
 
+    /**
+     *
+     * @param {HTMLElement} container
+     * @param {UserServices} userServices
+     * @returns
+     */
     constructor(container, userServices) {
         container.innerHTML = `
         <header>
             <h1>Users API</h1>
         </header>
-        <button id="toast">Test Toast</button>
         <main class="container">
+            <input type="range" min="1" id="usersPerPage" value="1"/>
+            <select id="selectedPage">
+
+            </select>
             <div class="table-responsive" id="usersTable">
                 <table class="table table-striped table-dark">
                     <thead>
@@ -44,44 +68,58 @@ export class UsersPage {
         this.tbody = container.querySelector("#usersTableBody");
         this.userServices = userServices;
         this.userCard = new UserCard(null, this.userServices, this.usersDetailsContainer);
-    }
 
-    LoadUsers = async (page) => {
         if (!this.tbody) {
             return console.error("Users table not found.");
         }
 
-        this.loadingModal.Render();
+        //TODO handle changes of page size and page
+        this.Init();
+    }
 
-        const { users, total, totalPage } = await this.userServices.GetAll(page, this.usersPerPage);
+    async Init() {
+        await this.LoadUsers();
+        this.RenderUsers();
+    }
 
-        this.loadingModal.Dispose();
-
-        if (!users) {
-            this.loadingModal.Dispose();
-            return;
-        }
-
+    RenderUsers() {
         if (this.usersPagination) {
             this.usersPagination.Dispose();
         }
 
         this.usersPagination = new Pagination(
-            Array.from({ length: totalPage }, (_, i) => i + 1),
-            page || 1,
-            this.LoadUsers,
+            Array.from({ length: this.totalPages }, (_, i) => i + 1),
+            this.selectedPage,
+            this.OnChangePagination,
             this.usersPaginationContainer
         );
         this.usersPagination.Render();
 
         this.tbody.innerHTML = "";
 
-        users.forEach((user) => {
+        const startIndex = (this.selectedPage - 1) * this.usersPerPage;
+        const usersToRender = this.users.slice(startIndex, startIndex + this.usersPerPage);
+        usersToRender.forEach((user) => {
             const userRow = new UserRow(user, this.ShowUserCard, this.tbody);
             userRow.Render();
         });
+    }
 
-        console.log(users);
+    OnChangePagination(selectedPage, usersPerPage) {
+        this.selectedPage = selectedPage;
+        if (usersPerPage) {
+            this.usersPerPage = usersPerPage;
+        }
+
+        this.RenderUsers();
+    }
+
+    LoadUsers = async (page) => {
+        this.loadingModal.Render();
+
+        this.users = await this.userServices.GetAll();
+
+        this.loadingModal.Dispose();
     };
 
     ShowUserCard = async (id, mode) => {
