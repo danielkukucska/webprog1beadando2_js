@@ -1,14 +1,11 @@
 /**
  * @class
  * @constructor
- * @property {number} status
- * @property {string} message
  */
 class HttpException extends Error {
     status;
     message;
     /**
-     *
      * @param {number} status
      * @param {string} message
      */

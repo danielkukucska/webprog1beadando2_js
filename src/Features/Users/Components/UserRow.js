@@ -29,7 +29,7 @@ class UserRow extends Component {
         <td>
             <img src="${this.user.avatar}" alt="Profile picture for ${this.user.first_name} ${this.user.last_name}"/>
         </td>
-        <td id="fullName_${this.user.id}">
+        <td id="fullName_${this.user.id}" class="cursor-pointer">
             ${this.user.first_name} ${this.user.last_name}
         </td>
         <td>

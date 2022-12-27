@@ -57,7 +57,7 @@ export class UsersPage {
                 </table>
             </div>
             <div id="usersPagination"></div>
-            <div id="usersDetails"></div>
+            <div id="usersDetails" class="d-flex justify-content-center"></div>
         </main>
         `;
 
@@ -105,7 +105,7 @@ export class UsersPage {
             userRow.Render();
         });
 
-        const newUserRow = new NewUserRow(this.SaveUser,this.tbody)
+        const newUserRow = new NewUserRow(this.SaveUser, this.tbody);
         newUserRow.Render();
     }
 

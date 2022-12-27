@@ -5,7 +5,6 @@
 class Service {
     baseUrl;
     /**
-     *
      * @param {string} baseUrl
      */
     constructor(baseUrl) {

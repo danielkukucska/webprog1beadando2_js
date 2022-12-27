@@ -27,9 +27,12 @@ class Pagination extends Component {
     }
 
     BuildComponent() {
+        this.element.className = "d-flex flex-column align-items-center"
         this.element.innerHTML = `
-        <input type="range" min="1" max="${this.itemCount}" id="itemsPerPage" value="${this.itemsPerPage}" oninput="this.nextElementSibling.value = this.value"/>
-        <output>${this.itemsPerPage}</output>
+        <div>
+            <input type="range" min="1" max="${this.itemCount}" id="itemsPerPage" value="${this.itemsPerPage}" oninput="this.nextElementSibling.value = this.value"/>
+            <output>${this.itemsPerPage}</output>
+        </div>
         <ul class="pagination">
         ${this.pageNumbers
             .map(

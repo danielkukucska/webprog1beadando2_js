@@ -55,8 +55,8 @@ class NewUserRow extends Component {
             const formData = new FormData(e.target);
             const newUser = { ...Object.fromEntries(formData) };
 
-            const isValid = this.ValidateUser(newUser)
-            if(!isValid) return;
+            const isValid = this.ValidateUser(newUser);
+            if (!isValid) return;
 
             await this.saveUser("create", newUser);
 
@@ -82,7 +82,7 @@ class NewUserRow extends Component {
             toast.Add("Job should be at least 5 characters starting with a letter (lowercase english letters and space).");
         }
 
-        const keys = ["name", "job"]
+        const keys = ["name", "job"];
         Object.keys(user).forEach((key) => {
             if (!keys.includes(key)) {
                 result = false;

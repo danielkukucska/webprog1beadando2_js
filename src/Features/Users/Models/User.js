@@ -10,7 +10,6 @@ class User {
     avatar;
 
     /**
-     *
      * @param {number} id
      * @param {string} first_name
      * @param {string} last_name

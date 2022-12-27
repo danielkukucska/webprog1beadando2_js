@@ -44,11 +44,6 @@ class UserServices extends Service {
      * @returns {User[]}
      */
     async GetAll() {
-        // if(usersPerPage == 0){
-        //     toast.Add("Users per page is set to 0.")
-        //     return {data: [],totalPages: 0}
-        // }
-
         const users = [];
         let page = 1;
         do {
@@ -59,8 +54,6 @@ class UserServices extends Service {
                 break;
             }
         } while (true);
-
-        // const totalPages = Math.ceil(data.length / usersPerPage);
 
         return users;
     }
@@ -96,7 +89,7 @@ class UserServices extends Service {
     /**
      * @async
      * @param {User} item
-     * @returns {user}
+     * @returns {User}
      */
     async Create(item) {
         try {
@@ -109,7 +102,11 @@ class UserServices extends Service {
             });
             if (!resp.ok) throw new HttpException(resp.status, resp.statusText);
             const data = await resp.json();
-            toast.Add(`User created with:<br /> ${Object.keys(data).map((key) => `${key}: ${data[key]}`).join("<br />")}`);
+            toast.Add(
+                `User created with:<br /> ${Object.keys(data)
+                    .map((key) => `${key}: ${data[key]}`)
+                    .join("<br />")}`
+            );
             return data;
         } catch (error) {
             switch (true) {
