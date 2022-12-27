@@ -49,12 +49,12 @@ class UserServices extends Service {
         //     return {data: [],totalPages: 0}
         // }
 
-        const data = [];
+        const users = [];
         let page = 1;
         do {
-            const result = await this.getPage(page);
-            if (result && result.data) {
-                data.push(...result.data);
+            const result = await this.getPage(page++);
+            if (result && result.users && result.users.length > 0) {
+                users.push(...result.users);
             } else {
                 break;
             }
@@ -62,7 +62,7 @@ class UserServices extends Service {
 
         // const totalPages = Math.ceil(data.length / usersPerPage);
 
-        return data;
+        return users;
     }
 
     /**

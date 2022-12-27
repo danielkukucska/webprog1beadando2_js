@@ -22,14 +22,16 @@ export class UsersPage {
      * @type {Pagination | null}
      */
     usersPagination;
-    usersPerPage = 10;
+    usersPerPage = 3;
     selectedPage = 1;
-    totalPages = 2;
+    /**
+     * @type {number}
+     */
+    totalPages;
     usersDetailsContainer;
     userCard;
 
     /**
-     *
      * @param {HTMLElement} container
      * @param {UserServices} userServices
      * @returns
@@ -40,10 +42,6 @@ export class UsersPage {
             <h1>Users API</h1>
         </header>
         <main class="container">
-            <input type="range" min="1" id="usersPerPage" value="1"/>
-            <select id="selectedPage">
-
-            </select>
             <div class="table-responsive" id="usersTable">
                 <table class="table table-striped table-dark">
                     <thead>
@@ -90,8 +88,10 @@ export class UsersPage {
         this.usersPagination = new Pagination(
             Array.from({ length: this.totalPages }, (_, i) => i + 1),
             this.selectedPage,
-            this.OnChangePagination,
-            this.usersPaginationContainer
+            this.OnChangePagination.bind(this),
+            this.usersPaginationContainer,
+            this.users.length,
+            this.usersPerPage
         );
         this.usersPagination.Render();
 
@@ -105,19 +105,25 @@ export class UsersPage {
         });
     }
 
+    /**
+     * @param {number} selectedPage
+     * @param {number} usersPerPage
+     */
     OnChangePagination(selectedPage, usersPerPage) {
         this.selectedPage = selectedPage;
         if (usersPerPage) {
             this.usersPerPage = usersPerPage;
+            this.totalPages = Math.ceil(this.users.length / usersPerPage);
         }
 
         this.RenderUsers();
     }
 
-    LoadUsers = async (page) => {
+    LoadUsers = async () => {
         this.loadingModal.Render();
 
         this.users = await this.userServices.GetAll();
+        this.totalPages = Math.ceil(this.users.length / this.usersPerPage);
 
         this.loadingModal.Dispose();
     };
