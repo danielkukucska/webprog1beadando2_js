@@ -128,34 +128,51 @@ export class UsersPage {
         this.loadingModal.Dispose();
     };
 
+    /**
+     *
+     * @param {number} id
+     * @param {"view" | "update" | "delete"} mode
+     */
     ShowUserCard = async (id, mode) => {
         const user = await this.userServices.GetById(id);
-        this.userCard.Update(user, mode);
+        this.userCard.Update(user, mode, this.SaveUser, this.DeleteUser);
         this.userCard.ReRender();
     };
 
-    SaveUser = async (mode) => {
-        if (mode === "Update") {
-            const updatedUser = await this.userServices.Update({});
+    /**
+     *
+     * @param {"view" | "update" | "delete"}  mode
+     * @param {User} user
+     */
+    SaveUser = async (mode, user) => {
+        if (mode === "update") {
+            const updatedUser = await this.userServices.Update(user);
             if (updatedUser) {
-                console.log({ updatedUser });
-            } else {
-                console.log("fail");
+                this.users = this.users.map((u) => (u.id == updatedUser.id ? { ...u, ...updatedUser } : u));
             }
         } else {
-            const createdUser = await this.userServices.Create({});
+            const createdUser = await this.userServices.Create(user);
             if (createdUser) {
-                console.log({ createdUser });
-            } else {
-                console.log("fail");
+                this.users.push(createdUser);
             }
         }
+
+        this.RenderUsers();
     };
 
+    /**
+     * @param {number} id
+     */
     DeleteUser = async (id) => {
         const result = await this.userServices.Delete(id);
         if (!result) return;
 
-        console.log({ result });
+        this.users = this.users.filter((user) => user.id != id);
+        this.totalPages = Math.ceil(this.users.length / this.usersPerPage);
+        if (this.selectedPage > this.totalPages) {
+            this.selectedPage--;
+        }
+
+        this.RenderUsers();
     };
 }

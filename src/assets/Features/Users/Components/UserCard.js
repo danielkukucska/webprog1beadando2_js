@@ -10,13 +10,26 @@ import UserServices from "../../../Services/UserServices.js";
  */
 class UserCard extends Component {
     user;
+    /**
+     * @type {"view" | "update" | "delete"}
+     */
     mode;
+
     userServices;
+    /**
+     * @type {(mode: "update" | "create", user: User) => Promise<void>}
+     */
+    saveUser;
+    /**
+     * @type {( id: number) => Promise<void>}
+     */
+    deleteUser;
 
     /**
      * @param {User} user
      * @param {UserServices} userServices
      * @param {HTMLElement} container
+    
      */
     constructor(user, userServices, container) {
         super("div", container);
@@ -49,14 +62,14 @@ class UserCard extends Component {
                 this.element.className = "card";
                 this.element.innerHTML = `
                     <form class="card-body">
-                        <label for="firstName">
+                        <label for="first_name">
                             First Name
                         </label>
-                        <input type="text" value="${this.user.first_name}" id="firstName" name="firstName" class="card-title" placeholder="First name" />
-                        <label for="lastName">
+                        <input type="text" value="${this.user.first_name}" id="first_name" name="first_name" class="card-title" placeholder="First name" />
+                        <label for="last_name">
                             Last Name
                         </label>
-                        <input type="text" value="${this.user.last_name}" id="lastName" name="lastName" class="card-title" placeholder="Last name" />
+                        <input type="text" value="${this.user.last_name}" id="last_name" name="last_name" class="card-title" placeholder="Last name" />
                         <label>
                             Email
                         </label>
@@ -70,9 +83,9 @@ class UserCard extends Component {
                 form.addEventListener("submit", async (e) => {
                     e.preventDefault();
                     const formData = new FormData(e.target);
-                    const updatedUser = await this.userServices.Update({ id: this.user.id, ...Object.fromEntries(formData) });
-                    console.log(updatedUser);
-                    this.Update(null, "");
+                    await this.saveUser("update", { id: this.user.id, ...Object.fromEntries(formData) });
+
+                    this.Update(null, "", null, null);
                     this.Dispose();
                 });
                 break;
@@ -90,8 +103,9 @@ class UserCard extends Component {
                 const deleteBtn = this.element.querySelector("#delete");
                 const cancelBtn = this.element.querySelector("#cancel");
                 deleteBtn.addEventListener("click", async (e) => {
-                    const result = await this.userServices.Delete(this.user.id);
-                    this.Update(null, "");
+                    await this.deleteUser(this.user.id);
+
+                    this.Update(null, "", null, null);
                     this.Dispose();
                 });
                 cancelBtn.addEventListener("click", async (e) => {
@@ -106,11 +120,14 @@ class UserCard extends Component {
     }
 
     /**
-     *
-     * @param {*} user
-     * @param {*} mode
+     * @param {User} user
+     * @param {"view" | "update" | "delete"} mode
+     * @param {(mode: "update" | "create" , user: User) => Promise<void>} saveUser
+     * @param {(id: number) => Promise<void>} deleteUser
      */
-    Update(user, mode) {
+    Update(user, mode, saveUser, deleteUser) {
+        this.saveUser = saveUser;
+        this.deleteUser = deleteUser;
         this.user = user;
         this.mode = mode;
     }

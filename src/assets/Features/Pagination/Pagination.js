@@ -48,10 +48,7 @@ class Pagination extends Component {
         </ul>
         `;
 
-        this.element.querySelector("#itemsPerPage").addEventListener("change", (e) => {
-            console.log(e);
-             this.changePagination(1, Number(e.target.value))
-        });
+        this.element.querySelector("#itemsPerPage").addEventListener("change", (e) => this.changePagination(1, Number(e.target.value)));
         this.element.querySelectorAll(".page-link").forEach((btn) => {
             btn.addEventListener("click", () => this.changePagination(btn.id.replace("page_", "")));
         });
