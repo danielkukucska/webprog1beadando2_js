@@ -4,6 +4,7 @@ import UserRow from "./Components/UserRow.js";
 import UserCard from "./Components/UserCard.js";
 import UserServices from "../../Services/UserServices.js";
 import User from "./Models/User.js";
+import NewUserRow from "./Components/NewUserRow.js";
 
 /**
  * @class
@@ -103,6 +104,9 @@ export class UsersPage {
             const userRow = new UserRow(user, this.ShowUserCard, this.tbody);
             userRow.Render();
         });
+
+        const newUserRow = new NewUserRow(this.SaveUser,this.tbody)
+        newUserRow.Render();
     }
 
     /**

@@ -24,7 +24,7 @@ class Toast extends Component {
                 <div class="toast show align-items-center border-0" role="alert" id="${id}">
                     <div class="d-flex">
                         <div class="toast-body">
-                        ${message}
+                            ${message}
                         </div>
                         <button type="button" class="btn-close me-2 m-auto" aria-label="Close"></button>
                     </div>

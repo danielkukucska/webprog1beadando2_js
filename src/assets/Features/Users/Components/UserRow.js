@@ -11,7 +11,6 @@ class UserRow extends Component {
     user;
     showUserCard;
 
-    //TODO show update, delete popup
     /**
      * @param {User} user
      * @param {boolean} showUserCard

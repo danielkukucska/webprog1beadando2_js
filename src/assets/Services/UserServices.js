@@ -109,7 +109,7 @@ class UserServices extends Service {
             });
             if (!resp.ok) throw new HttpException(resp.status, resp.statusText);
             const data = await resp.json();
-            toast.Add(`User created with id: ${data.id}`);
+            toast.Add(`User created with:<br /> ${Object.keys(data).map((key) => `${key}\t${data[key]}`).join("<br />")}`);
             return data;
         } catch (error) {
             switch (true) {
